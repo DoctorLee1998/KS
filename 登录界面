@@ -1,104 +1,116 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 	<head>
-	    <meta charset="UTF-8">
-	    <title>登陆</title>
-	    <style>
-		    body {
-		        background-image: url("登录背景.jpg");
-		        background-position: center 0;
-		        background-repeat: no-repeat;
-		        background-attachment: fixed;
-		        background-size: cover;
-		        -webkit-background-size: cover;
-		        -o-background-size: cover;
-		        -moz-background-size: cover;
-		        -ms-background-size: cover;
-		    }
-		    .class1{
-		        font-family: "微软雅黑 Light";
-		        font-size: 30px;
-		        color: aliceblue;
-		        text-align: center;
-		        border: 1px solid azure;
-		        border-radius: 15px 15px 0px 0px;	/*添加圆角边框*/
-		        background-color: burlywood;/*设置边框内颜色*/
-		        margin-top: 300px;/*边框距上方距离*/
-		        margin-left: 500px;/*边框距左边距离*/
-		        margin-right: 500px;
+		<meta charset="UTF-8">
+		<title>登陆</title>
+		<style>
+			body {
+				background-image: url("登录背景.jpg");
+				background-position: center 0;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				-moz-background-size: cover;
+				-ms-background-size: cover;
+			}
+			
+			.class1 {
+				font-family: "微软雅黑 Light";
+				font-size: 30px;
+				color: aliceblue;
+				text-align: center;
+				border: 1px solid azure;
+				border-radius: 15px 15px 0px 0px;
+				/*添加圆角边框*/
+				background-color: burlywood;
+				/*设置边框内颜色*/
+				margin-top: 300px;
+				/*边框距上方距离*/
+				margin-left: 500px;
+				/*边框距左边距离*/
+				margin-right: 500px;
 				margin-bottom: 10px;
-		    }
-		    .class2{
-		    	font-family: "微软雅黑 Light";
-		        text-align: center;
-		        background-color: #fdfff8;/*设置边框内颜色*/
-		        margin-top: -10px;/*边框距上方距离*/
-		        margin-left: 500px;/*边框距左边距离*/
-		        margin-right: 500px;
-		    }
-		    .button {
-		    	font-family: "微软雅黑 Light";
-		        display: inline-block;
-		        padding: 10px 5px;
-		        font-size: 14px;
-		        cursor: pointer;
-		        text-align: center;
-		        text-decoration: none;
-		        outline: none;
-		        color: #fff;
-		        background-color: rgba(183,207,206,0.77);
-		        border: none;
-		        border-radius: 15px;
-		    }
-		    .button:hover {background-color: #04416a;
-		        text-align:center
-		    }
-		    .button:active {
-		        background-color: #04416a;
-		        box-shadow: 0 5px #666;
-		        transform: translateY(4px);
-		        text-align:center
-		    }
+			}
+			
+			.class2 {
+				font-family: "微软雅黑 Light";
+				text-align: center;
+				background-color: #fdfff8;
+				/*设置边框内颜色*/
+				margin-top: -10px;
+				/*边框距上方距离*/
+				margin-left: 500px;
+				/*边框距左边距离*/
+				margin-right: 500px;
+			}
+			
+			.button {
+				font-family: "微软雅黑 Light";
+				display: inline-block;
+				padding: 10px 5px;
+				font-size: 14px;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				outline: none;
+				color: #fff;
+				background-color: rgba(183, 207, 206, 0.77);
+				border: none;
+				border-radius: 15px;
+			}
+			
+			.button:hover {
+				background-color: #04416a;
+				text-align: center
+			}
+			
+			.button:active {
+				background-color: #04416a;
+				box-shadow: 0 5px #666;
+				transform: translateY(4px);
+				text-align: center
+			}
 		</style>
-		
-		<script type="text/javascript"> 
-		    function check(){
-		        var username = document.getElementById('username').value;
-		        var password = document.getElementById('password').value;
-		        if(username == ''){
-		            alert("用户名不能为空");
-		            return;
-		        }
-		        if(password == ''){
-		        	alert("密码不能为空")
-		        	return;
-		        }
-		        if(username == '123456' && password == '123456'){
-		        	alert('登陆成功');
-		        	window.location.href="待机界面.html";
-		        }
-		        else{
-		        	alert('输入有误，请确认帐号密码无误后重新输入');
-		        }
-		    }
+
+		<script type="text/javascript">
+			function check() {
+				var username = document.getElementById('username').value;
+				var password = document.getElementById('password').value;
+				if(username == '') {
+					alert("用户名不能为空");
+					return;
+				}
+				if(password == '') {
+					alert("密码不能为空")
+					return;
+				}
+				if(username == '123456' && password == '123456') {
+					alert('登陆成功');
+					window.location.href = "待机界面.html";
+				} else {
+					alert('输入有误，请确认帐号密码无误后重新输入');
+				}
+			}
 		</script>
 	</head>
-	
 
 	<body>
 		<div class="class1">
 			欢迎使用本系统
 		</div>
-		
+
 		<div class="class2">
-	    	<input type="text" id="username" placeholder="请输入账号">
-	   		<br>
-	        <br>
-	        <input type="password" id="password" placeholder="请输入密码">
-	        <br>
-	        <br>
-	        <input class="button" value="登录" onclick="check();">
+			<input type="text" id="username" placeholder="请输入账号">
+			<br>
+			<br>
+			<input type="password" id="password" placeholder="请输入密码">
+			<br>
+			<br>
+			<input class="button" value="登录" onclick="check();">
 		</div>
-		    
+
 	</body>
-</ html>
+	</ html>
