@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>待机界面.html</title>
+
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="this is my page">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<script type="text/javascript">
+/*			var myVar = setInterval(function() {
+				myTimer()
+			}, 1000);
+
+			function myTimer() {
+				var d = new Date();
+				var t = d.toLocaleTimeString();
+				document.getElementById("time").innerHTML = t;
+			}
+
+			function myStopFunction() {
+				clearInterval(myVar);
+			}*/
+
+			var db = openDatabase('mydb', '1.0', 'Test DB', 1000 * 1024 * 1024);
+
+			/*公示所有变量，然后这些变量并不会在本html中出现*/
+			var tradingOrder = 0,
+				licensePlate = "",
+				inbound = "",
+				departure = "",
+				mileage = "",
+				cost = "",
+				i_datetime = "",
+				d_datetime = "";
+
+			db.transaction(function(tx) {
+				tx.executeSql('CREATE TABLE IF NOT EXISTS KS0 (tradingOrder unique, licensePlate, inbound, departure, mileage, cost, i_datetime, d_datetime)');
+				/*tx.executeSql('INSERT INTO KS0 (tradingOrder, licensePlate, inbound, departure, mileage, cost, i_datetime, d_datetime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [tradingOrder, licensePlate, inbound, departure, mileage, cost, i_datetime, d_datetime]);
+				       	 实验证明，html web sql 无法在 db.transaction 中更改变量
+				        	所以请将更改的变量卸载外面，谢谢（详情请见1.html）*/
+			});
+
+			/*添加数据错误的情况下想删谁删谁
+			db.transaction(function(tx) {
+				tx.executeSql('DELETE FROM KS0  WHERE tradingOrder<100');});*/
+
+			db.transaction(function(tx) {
+				tx.executeSql('SELECT * FROM KS0', [], function(tx, results) {
+					var len = results.rows.length,
+						i;
+					document.querySelector('#resultDiv').innerHTML += "<p>当前数据库中共有: " + len + " 条记录</p>";
+					/*显示所有已存在的交易单详情*/
+
+					var div = document.getElementById("resultDiv");
+					div.innerHTML = "";
+					var row = len + 1,
+						col = 8;
+
+					var table = document.createElement("table");
+					table.setAttribute("border", "1");
+					table.setAttribute("width", "90%");
+					var tbody = document.createElement("tbody");
+					table.appendChild(tbody);
+
+					for(var i = 0; i < parseInt(row); i++) { //parseInt将字符串转化成INT
+						var tr = document.createElement("tr");
+						var td1 = document.createElement("td");
+						var td2 = document.createElement("td");
+						var td3 = document.createElement("td");
+						var td4 = document.createElement("td");
+						var td5 = document.createElement("td");
+						var td6 = document.createElement("td");
+						var td7 = document.createElement("td");
+						var td8 = document.createElement("td");
+
+						if(i == 0) {
+							td1.innerHTML = "交易单号";
+							tr.appendChild(td1);
+							td2.innerHTML = "车牌号";
+							tr.appendChild(td2);
+							td3.innerHTML = "入站口";
+							tr.appendChild(td3);
+							td4.innerHTML = "出站口";
+							tr.appendChild(td4);
+							td5.innerHTML = "里程(km)";
+							tr.appendChild(td5);
+							td6.innerHTML = "费用(元)";
+							tr.appendChild(td6);
+							td7.innerHTML = "入站时间";
+							tr.appendChild(td7);
+							td8.innerHTML = "出站时间";
+							tr.appendChild(td8);
+						} else {
+							n = i - 1;
+							td1.innerHTML = results.rows.item(n).tradingOrder;
+							tr.appendChild(td1);
+							td2.innerHTML = results.rows.item(n).licensePlate;
+							tr.appendChild(td2);
+							td3.innerHTML = results.rows.item(n).inbound;
+							tr.appendChild(td3);
+							td4.innerHTML = results.rows.item(n).departure;
+							tr.appendChild(td4);
+							td5.innerHTML = results.rows.item(n).mileage;
+							tr.appendChild(td5);
+							td6.innerHTML = results.rows.item(n).cost;
+							tr.appendChild(td6);
+							td7.innerHTML = results.rows.item(n).i_datetime;
+							tr.appendChild(td7);
+							td8.innerHTML = results.rows.item(n).d_datetime;
+							tr.appendChild(td8);
+						}
+						tbody.appendChild(tr);
+					}
+					div.appendChild(table);
+				}, null);
+			});
+
+			function _delete() {
+				var d_tradingOrder = parseInt(document.getElementById('d_tradingOrder').value);
+				/*一开始忘转INT了，字符串中的 1 难道就不是 1 了吗？*/
+				db.transaction(function(tx) {
+					tx.executeSql('DELETE FROM KS0  WHERE tradingOrder = ?', [d_tradingOrder]);
+					alert("已完成删除操作，点击刷新界面");
+				});
+
+				//操作完成后刷新界面
+				location.reload();
+			}
+
+			function revise() {
+				var r_tradingOrder = parseInt(document.getElementById('r_tradingOrder').value);
+				var r_licensePlate = document.getElementById('r_licensePlate').value;
+				//alert(r_tradingOrder + " " + r_licensePlate);
+				db.transaction(function(tx) {
+					tx.executeSql('UPDATE KS0 SET licensePlate = ? WHERE tradingOrder = ?', [r_licensePlate, r_tradingOrder]);
+					alert("已完成更新操作，点击刷新界面");
+				});
+
+				//操作完成后刷新界面
+				location.reload();
+			}
+		</script>
+
+	</head>
+
+	<body>
+
+		<div id="时间">
+			<p>当前时间 ：</p>
+			<p id="time"></p>
+		</div>
+
+		<div class="入站">
+			<p>&emsp;入站</p>
+			<p>
+				<a href="入站（南京A）.html">入站页面（南京A）</a>
+			</p>
+			<p>
+				<a href="入站（南京B）.html">入站页面（南京B）</a>
+			</p>
+			<p>
+				<a href="入站（南京C）.html">入站页面（南京C）</a>
+			</p>
+		</div>
+
+		<div class="出站">
+			<p>&emsp;出站</p>
+			<p>
+				<a href="出站（南京A）.html">出站界面（南京A）</a>
+			</p>
+			<p>
+				<a href="出站（南京B）.html">出站界面（南京B）</a>
+			</p>
+			<p>
+				<a href="出站（南京C）.html">出站界面（南京C）</a>
+			</p>
+		</div>
+
+		<div id="显示所有交易单">
+			<br />
+			<p>显示当前所有交易单</p>
+			<br />
+			<div id="resultDiv"></div>
+		</div>
+
+		<div id="操作交易单">
+			<p>删除订单</p>
+			<input type="text" id="d_tradingOrder" placeholder="请输入订单号">
+			<input class="button" value="删除记录" onclick="_delete();">
+
+			<p>修改订单</p>
+			<input type="text" id="r_tradingOrder" placeholder="请输入订单号">
+			<input type="text" id="r_licensePlate" placeholder="请输入将要修改的车牌号">
+			<!--  你能手动输入的只有车牌号，除了这个你还能输错甚么？   -->
+			<input class="button" value="修改记录" onclick="revise();">
+		</div>
+
+	</body>
+
+</html>

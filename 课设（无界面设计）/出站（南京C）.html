@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>入站（南京A）.html</title>
+
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="this is my page">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<script type="text/javascript">
+			function input() {
+				var db = openDatabase('mydb', '1.0', 'Test DB', 1000 * 1024 * 1024);
+				var tradingOrder = 0,
+					licensePlate = document.getElementById('licensePlate').value,
+					inbound = "",
+					departure = "南京C站",
+					mileage = "",
+					cost = "",
+					i_datetime = "",
+					d_datetime = Date();
+
+				db.transaction(function(tx) {
+/*					tx.executeSql('SELECT * FROM KS0 WHERE licensePlate = ? and d_datetime = ""', [licensePlate], function(tx, results) {
+						var len = results.rows.length;
+						alert(length);
+						if(results.rows.item(length).inbound == "南京A站") {
+							mileage = 30;
+							cost = 30;
+						} else {
+							mileage = 40;
+							cost = 40;
+						}
+					}, null);
+
+					tx.executeSql('UPDATE KS0 SET departure=? WHERE licensePlate = ? and d_datetime = ""', [departure, licensePlate]);
+					tx.executeSql('UPDATE KS0 SET mileage=? WHERE licensePlate = ? and d_datetime = ""', [mileage, licensePlate]);
+					tx.executeSql('UPDATE KS0 SET cost=? WHERE licensePlate = ? and d_datetime = ""', [cost, licensePlate]);
+					tx.executeSql('UPDATE KS0 SET d_datetime=? WHERE licensePlate = ? and d_datetime = ""', [d_datetime, licensePlate]);
+*/
+				});
+
+				db.transaction(function(tx) {
+					tx.executeSql('SELECT * FROM KS0 WHERE licensePlate=? and d_datetime = ""', [licensePlate], function(tx, results) {
+						var len = results.rows.length,
+							i;
+						for(i = 0; i < len; i++) {
+							if(results.rows.item(length).inbound == "南京A站") {
+								mileage = 30;
+								cost = 30;
+							} else {
+								mileage = 40;
+								cost = 40;
+							}
+						}
+						tx.executeSql('UPDATE KS0 SET departure=? WHERE licensePlate = ? and d_datetime = ""', [departure, licensePlate]);
+						tx.executeSql('UPDATE KS0 SET mileage=? WHERE licensePlate = ? and d_datetime = ""', [mileage, licensePlate]);
+						tx.executeSql('UPDATE KS0 SET cost=? WHERE licensePlate = ? and d_datetime = ""', [cost, licensePlate]);
+						tx.executeSql('UPDATE KS0 SET d_datetime=? WHERE licensePlate = ? and d_datetime = ""', [d_datetime, licensePlate]);
+					}, null);
+				});
+
+				db.transaction(function(tx) {
+					tx.executeSql('SELECT * FROM KS0 WHERE d_datetime=?', [d_datetime], function(tx, results) {
+						var len = results.rows.length,
+							i;
+						document.querySelector('#status').innerHTML += "<p>已将在数据中更新交易单，请核对本次操作</p>";
+						for(i = 0; i < len; i++) {
+							document.querySelector('#status').innerHTML += "<p><b>交易单号 ：" + results.rows.item(i).tradingOrder + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>车牌号 ：" + results.rows.item(i).licensePlate + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>入站 ：" + results.rows.item(i).inbound + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>出站 ：" + results.rows.item(i).departure + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>里程(km) ：" + results.rows.item(i).mileage + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>费用(元) ：" + results.rows.item(i).cost + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>入站时间： " + results.rows.item(i).i_datetime + "</b></p>";
+							document.querySelector('#status').innerHTML += "<p><b>出站时间： " + results.rows.item(i).d_datetime + "</b></p>";
+						}
+					}, null);
+				});
+			}
+		</script>
+
+		<style>
+			.button {
+				font-family: "微软雅黑 Light";
+				display: inline-block;
+				padding: 10px 5px;
+				font-size: 14px;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				outline: none;
+				color: #fff;
+				background-color: rgba(183, 207, 206, 0.77);
+				border: none;
+				border-radius: 15px;
+			}
+			
+			.button:hover {
+				background-color: #04416a;
+				text-align: center
+			}
+			
+			.button:active {
+				background-color: #04416a;
+				box-shadow: 0 5px #666;
+				transform: translateY(4px);
+				text-align: center
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="status" name="status">
+			<p>出站点仅需录入车牌号</p>
+			<p>交易单号等数据将会自动填入</p>
+			<input type="text" id="licensePlate" placeholder="请输入车牌号">
+			<input class="button" value="更新记录" onclick="input();">
+		</div>
+	</body>
+
+</html>
